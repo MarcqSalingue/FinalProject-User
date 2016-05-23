@@ -45,10 +45,15 @@ public class User {
 	/**
 	 * The constructor.
 	 */
+	public User(String firstname, String surname, String login, String pwd, String classe) {
+		this.setFirstname(firstname);
+		this.setSurname(surname);
+		this.setLogin(login);
+		this.setPwd(pwd);
+		this.setUserClass(classe);
+	}
+	
 	public User() {
-		// Start of user code constructor for User)
-		super();
-		// End of user code
 	}
 
 	/**

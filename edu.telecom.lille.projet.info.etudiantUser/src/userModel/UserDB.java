@@ -2,6 +2,32 @@ package userModel;
 
 import java.util.LinkedList;
 import java.util.List;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.ListIterator;
+import java.util.Iterator;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.OutputStream;
+import java.io.PrintStream;
+import java.util.Collection;
+import java.util.Hashtable;
+import org.jdom2.Content;
+import org.jdom2.Document;
+import org.jdom2.Element;
+import org.jdom2.input.SAXBuilder;
+import org.jdom2.output.Format;
+import org.jdom2.output.XMLOutputter;
+import userModel.Admin;
+import userModel.Student;
+import userModel.Group;
+import userModel.Teacher;
+import userModel.User;
+import java.io.*;
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
 
 /**
  * 
@@ -79,8 +105,48 @@ public class UserDB {
 	 * Description of the method loadDB.
 	 */
 	public void loadDB() {
-		// Start of user code for method loadDB
-		// End of user code
+
+		SAXBuilder sax;
+		sax = new SAXBuilder();
+		Document document;
+		document = null;
+		Element roof;
+		String login, pwd, firstname, surname, id, group;
+		//Object object;
+			        
+		try { //on essaye d'ouvrir le fichier
+			document = sax.build(new File(this.file));
+		} catch (Exception v0) {}
+			  
+		if(document != null) { //si on arrive à ouvrir le fichier
+			//On initialise un nouvel élément racine avec l'élément racine du document.
+		    roof = document.getRootElement();
+			//On descend d'un cran
+		    Element roof2 = roof.getChild("Students");
+			            
+			//on récupère la liste des étudiants
+			List<Element> studentList = roof2.getChildren("Student");
+			 
+			//On crée un Iterator sur notre liste
+			//Iterator iterator = studentList.iterator();
+			
+			for(int i = 0 ; i < studentList.size() ; i++) {
+				List<Element> student = studentList.get(i).getChildren();
+				//On enregistre dans les variables
+				login = student.get(0).getText();
+				firstname = student.get(1).getText();
+				surname = student.get(2).getText();
+				pwd =student.get(3).getText();
+				id = student.get(4).getText();
+				group = student.get(5).getText();
+
+				//on crée l'objet Etudiant
+				Student studentCreated = new Student(Integer.parseInt(id), firstname, surname, login, pwd); //Attention, rajouter groupe non?
+				
+				//on l'ajoute dans la liste des Utilisateurs
+				userList.add(studentCreated);
+			}	
+		} 
 	}
 
 	/**

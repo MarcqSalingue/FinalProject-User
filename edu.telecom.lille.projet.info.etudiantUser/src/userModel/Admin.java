@@ -26,11 +26,10 @@ public class Admin extends User {
 	/**
 	 * The constructor.
 	 */
-	public Admin() {
-		// Start of user code constructor for Admin)
-		super();
-		// End of user code
+	public Admin(int adminID, String firstname, String surname, String login, String pwd) {
+		super(firstname, surname, login, pwd, "Administrator");
 	}
+
 
 	/**
 	 * Description of the method addAdmin.
