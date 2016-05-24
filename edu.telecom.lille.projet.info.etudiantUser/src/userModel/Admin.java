@@ -106,17 +106,6 @@ public class Admin extends User {
 	}
 
 	/**
-	 * Description of the method associateStudToGroup.
-	 * @param adminLogin 
-	 * @param studentLogin 
-	 * @param groupID 
-	 */
-	public void associateStudToGroup(String adminLogin, String studentLogin, Integer groupID) {
-		// Start of user code for method associateStudToGroup
-		// End of user code
-	}
-
-	/**
 	 * Description of the method getStudentGroup.
 	 * @param studentLogin 
 	 */

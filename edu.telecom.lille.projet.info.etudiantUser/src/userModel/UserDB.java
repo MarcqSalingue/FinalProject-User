@@ -1,33 +1,17 @@
 package userModel;
 
-import java.util.LinkedList;
-import java.util.List;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.ListIterator;
-import java.util.Iterator;
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.OutputStream;
-import java.io.PrintStream;
-import java.util.Collection;
 import java.util.Hashtable;
-import org.jdom2.Content;
+import java.util.LinkedList;
+import java.util.List;
+import java.io.File;
 import org.jdom2.Document;
 import org.jdom2.Element;
 import org.jdom2.input.SAXBuilder;
-import org.jdom2.output.Format;
-import org.jdom2.output.XMLOutputter;
 import userModel.Admin;
 import userModel.Student;
 import userModel.Group;
 import userModel.Teacher;
 import userModel.User;
-import java.io.*;
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.parsers.ParserConfigurationException;
 
 /**
  * 
@@ -74,9 +58,9 @@ public class UserDB {
 	 * 		Le nom du fichier qui contient la base de donnÃ©es.
 	 */
 	public UserDB(String file){
-		//TODO Fonction Ã  modifier
 		super();
 		this.setFile(file);
+		loadDB();
 	}
 	
 	/**
@@ -87,7 +71,7 @@ public class UserDB {
 	 */
 	
 	public String getFile() {
-		return file;
+		return this.file;
 	}
 	
 	/**
@@ -104,7 +88,7 @@ public class UserDB {
 	/**
 	 * Description of the method loadDB.
 	 */
-	public void loadDB() {
+	public boolean loadDB() {
 
 		SAXBuilder sax;
 		sax = new SAXBuilder();
@@ -122,31 +106,62 @@ public class UserDB {
 			//On initialise un nouvel élément racine avec l'élément racine du document.
 		    roof = document.getRootElement();
 			//On descend d'un cran
-		    Element roof2 = roof.getChild("Students");
-			            
+		    Element roofStudent = roof.getChild("Students");   
+		    Element roofAdmin = roof.getChild("Administrators");
+		    Element roofTeacher = roof.getChild("Teachers");
 			//on récupère la liste des étudiants
-			List<Element> studentList = roof2.getChildren("Student");
-			 
-			//On crée un Iterator sur notre liste
-			//Iterator iterator = studentList.iterator();
-			
+			List<Element> studentList = roofStudent.getChildren("Student");
+			List<Element> adminList = roofAdmin.getChildren("Administrator");
+			List<Element> teacherList = roofTeacher.getChildren("Teacher");
+
 			for(int i = 0 ; i < studentList.size() ; i++) {
 				List<Element> student = studentList.get(i).getChildren();
 				//On enregistre dans les variables
 				login = student.get(0).getText();
 				firstname = student.get(1).getText();
 				surname = student.get(2).getText();
-				pwd =student.get(3).getText();
+				pwd = student.get(3).getText();
 				id = student.get(4).getText();
 				group = student.get(5).getText();
-
 				//on crée l'objet Etudiant
-				Student studentCreated = new Student(Integer.parseInt(id), firstname, surname, login, pwd); //Attention, rajouter groupe non?
-				
+				Student studentCreated = new Student(Integer.parseInt(id), firstname, surname, login, pwd, Integer.parseInt(group));
 				//on l'ajoute dans la liste des Utilisateurs
 				userList.add(studentCreated);
+				if (group != "-1") {
+					//associateStudToGroup(login, group);
+				}
 			}	
-		} 
+			
+			for(int i = 0 ; i < adminList.size() ; i++) {
+				List<Element> admin = adminList.get(i).getChildren();
+				//On enregistre dans les variables
+				login = admin.get(0).getText();
+				firstname = admin.get(1).getText();
+				surname = admin.get(2).getText();
+				pwd = admin.get(3).getText();
+				id = admin.get(4).getText();
+				//on crée l'objet Etudiant
+				Admin adminCreated = new Admin(Integer.parseInt(id), firstname, surname, login, pwd);
+				//on l'ajoute dans la liste des Utilisateurs
+				userList.add(adminCreated);
+			}
+				
+			for(int i = 0 ; i < teacherList.size() ; i++) {
+				List<Element> teacher = teacherList.get(i).getChildren();
+				//On enregistre dans les variables
+				login = teacher.get(0).getText();
+				firstname = teacher.get(1).getText();
+				surname = teacher.get(2).getText();
+				pwd = teacher.get(3).getText();
+				id = teacher.get(4).getText();
+				//on crée l'objet Etudiant
+				Teacher teacherCreated = new Teacher(Integer.parseInt(id), firstname, surname, login, pwd);
+				//on l'ajoute dans la liste des Utilisateurs
+				userList.add(teacherCreated);
+			}
+			return true;
+		}
+		return false;
 	}
 
 	/**
@@ -156,7 +171,78 @@ public class UserDB {
 		// Start of user code for method saveDB
 		// End of user code
 	}
+	
+	/**
+	 * Description of the method.
+	 * 
+	 * 
+	 */
+	public User findUserByLogin(String login) {
+		int i = 0;
+		
+	    for(i=0; i<userList.size(); i++) {
+	    	
+	    	if(userList.get(i).getLogin() == login) { return userList.get(i); }
+	    
+	    }
+	    
+	    return null;
+	    
+	}
+	  
+	/**
+	 * Description of the method.
+	 * 
+	 * 
+	 */
+	public Group findGroupByID(int groupID) {
+		int i = 0;
+		
+		for(i=0; i<groupList.size(); i++) {
+			
+			if(groupList.get(i).getGroupID() == groupID) { return groupList.get(i); }
+			
+		}
+		
+		return null;
+}
+	
+	/*public int findUserID(String login) {
+	    int i = 0;
+	    for(i=0; i<userList.size(); i++) {
+	     if(userList.get(i).getLogin() == login)
+	      return userList.get(i).get();
+	    }
+	    return -1;
+	   }
+	
+	public int findGroupID(int groupID) {
+	    int i = 0;
+	    for(i=0; i<group.size(); i++) {
+	     if(group.get(i).GetIdGroup() == id)
+	      return i;
+	    }
+	    return -1;
+	   }*/
+	
+	
 
+	/**
+	 * Description of the method associateStudToGroup.
+	 * @param adminLogin 
+	 * @param studentLogin 
+	 * @param groupID 
+	 */
+	public void associateStudToGroup(String adminLogin, String studentLogin, Integer groupID) {
+		boolean isAssociationDone = false;
+		if (this.findUserByLogin(adminLogin) instanceof Admin && this.findUserByLogin(studentLogin) != null 
+				&& this.findGroupByID(groupID) != null && this.findUserByLogin(studentLogin) instanceof Student) {
+			//if (this.findUserByLogin(studentLogin).get)
+		}
+		
+	}
+
+	
 	/**
 	 * Description of the method groupsIdToString.
 	 */

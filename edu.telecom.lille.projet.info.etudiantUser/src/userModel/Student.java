@@ -31,7 +31,7 @@ public class Student extends User {
 	/**
 	 * The constructor.
 	 */
-	public Student(int studentID, String firstname, String surname, String login, String pwd) {
+	public Student(int studentID, String firstname, String surname, String login, String pwd, int groupID) {
 		super(firstname, surname, login, pwd, "Student");
 	}
 
