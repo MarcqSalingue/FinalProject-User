@@ -52,24 +52,21 @@ public class UserController implements IUserController
 	}
 
 	@Override
-	public boolean addAdmin(String adminLogin, String newAdminlogin, int adminID, String firstname, String surname,
+	public boolean addAdmin(String adminLogin, String newAdminLogin, int adminID, String firstname, String surname,
 			String pwd) {
-		// TODO Auto-generated method stub
-		return false;
+		return userDB.addAdmin(adminLogin, newAdminLogin, adminID, firstname, surname, pwd);
 	}
 
 	@Override
-	public boolean addTeacher(String adminLogin, String newteacherLogin, int teacherID, String firstname,
+	public boolean addTeacher(String adminLogin, String newTeacherLogin, int teacherID, String firstname,
 			String surname, String pwd) {
-		// TODO Auto-generated method stub
-		return false;
+		return userDB.addTeacher(adminLogin, newTeacherLogin, teacherID, firstname, surname, pwd);
 	}
 
 	@Override
 	public boolean addStudent(String adminLogin, String newStudentLogin, int studentID, String firstname,
 			String surname, String pwd) {
-		// TODO Auto-generated method stub
-		return false;
+		return userDB.addAdmin(adminLogin, newStudentLogin, studentID, firstname, surname, pwd);
 	}
 
 	@Override

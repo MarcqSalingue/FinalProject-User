@@ -1,8 +1,10 @@
 package userModel;
 
+import java.util.HashMap;
 import java.util.Hashtable;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 import java.io.File;
 import org.jdom2.Document;
 import org.jdom2.Element;
@@ -30,7 +32,7 @@ public class UserDB {
 
 	public Hashtable groupTable;
 	private String file = "";
-	public Hashtable userTable;
+	public Map userTable = new HashMap();
 	
 	/**
 	 * 
@@ -44,7 +46,10 @@ public class UserDB {
 	public UserDB(String file){
 		super();
 		this.setFile(file);
-		loadDB();
+		this.userTable.put("su", new Admin(0, "su", "su", "su", "superUser"));
+		this.userTable.put("hmarcq", new Student(2000, "hmarcq", "Hugo", "Marcq", "211195"));
+		this.userTable.put("themennesson", new Teacher(1000, "themennesson", "José", "Mennesson", "cMoiLeProf"));
+		this.loadDB();
 	}
 	
 	/**
@@ -105,7 +110,7 @@ public class UserDB {
 				ID = Integer.parseInt(student.get(4).getText());
 				groupID = Integer.parseInt(student.get(5).getText());
 				
-				this.userTable.put(ID, new Student(ID, firstname, surname, login, pwd, groupID));
+				this.userTable.put(login, new Student(ID, firstname, surname, login, pwd, groupID));
 			}	
 			
 			for(int i = 0 ; i < adminList.size() ; i++) {
@@ -117,7 +122,7 @@ public class UserDB {
 				pwd = admin.get(3).getText();
 				ID = Integer.parseInt(admin.get(4).getText());
 				
-				this.userTable.put(ID, new Admin(ID, firstname, surname, login, pwd));
+				this.userTable.put(login, new Admin(ID, firstname, surname, login, pwd));
 			}
 				
 			for(int i = 0 ; i < teacherList.size() ; i++) {
@@ -129,7 +134,7 @@ public class UserDB {
 				pwd = teacher.get(3).getText();
 				ID = Integer.parseInt(teacher.get(4).getText());
 
-				this.userTable.put(ID, new Teacher(ID, firstname, surname, login, pwd));
+				this.userTable.put(login, new Teacher(ID, firstname, surname, login, pwd));
 			}
 			return true;
 		}
@@ -199,9 +204,17 @@ public class UserDB {
 	 * @param surname 
 	 * @param pwd 
 	 */
-	public void addAdmin(String adminLogin, String newAdminLogin, Integer adminID, String firstname, String surname,
+	public boolean addAdmin(String adminLogin, String newAdminLogin, int adminID, String firstname, String surname,
 			String pwd) {
-	
+		boolean isAdminAdded = false;
+		//System.out.println("je rentre dans addAdmin");
+		Admin newAdmin;
+		if (this.userTable.get(adminLogin) instanceof Admin && this.userTable.get(newAdminLogin) == null) {
+			newAdmin = new Admin(adminID, firstname, surname, newAdminLogin, pwd);
+			this.userTable.put(newAdminLogin, newAdmin);
+			isAdminAdded = true;
+		}
+		return isAdminAdded;
 	}
 
 	/**
@@ -212,9 +225,17 @@ public class UserDB {
 	 * @param firstname 
 	 * @param surname 
 	 */
-	public void addTeacher(String adminLogin, String newTeacherLogin, Integer teacherID, String firstname,
-			String surname) {
-	
+	public boolean addTeacher(String adminLogin, String newTeacherLogin, Integer teacherID, String firstname,
+			String surname, String pwd) {
+		boolean isTeacherAdded = false;
+		//System.out.println("je rentre dans addTeacher");
+		Admin newTeacher;
+		if (this.userTable.get(adminLogin) instanceof Admin && this.userTable.get(newTeacherLogin) == null) {
+			newTeacher = new Admin(teacherID, firstname, surname, newTeacherLogin, pwd);
+			this.userTable.put(newTeacherLogin, newTeacher);
+			isTeacherAdded = true;
+		}
+		return isTeacherAdded;
 	}
 
 	/**
@@ -226,9 +247,18 @@ public class UserDB {
 	 * @param surname 
 	 * @param pwd 
 	 */
-	public void addStudent(String adminLogin, String newStudentLogin, Integer studentID, String firstname,
+	public boolean addStudent(String adminLogin, String newStudentLogin, int studentID, String firstname,
 			String surname, String pwd) {
-		
+		boolean isStudentAdded = false;
+		Student newStudent;
+		//System.out.println("je rentre dans addStudent");
+		if (this.userTable.get(adminLogin) instanceof Admin && this.userTable.get(newStudentLogin) == null) {
+			//System.out.println("je rentre dans le if de addStudent");
+			newStudent = new Student(studentID, firstname, surname, newStudentLogin, pwd);
+			this.userTable.put(newStudentLogin, newStudent);
+			isStudentAdded = true;
+		}
+		return isStudentAdded;
 	}
 
 	/**
