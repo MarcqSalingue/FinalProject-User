@@ -21,14 +21,14 @@ public class Student extends User {
 	/**
 	 * The constructor.
 	 */
-	public Student(int studentID, String firstname, String surname, String login, String pwd) {
-		super(firstname, surname, login, pwd);
+	public Student(int studentID, String login, String pwd, String firstname, String surname) {
+		super(login, pwd, firstname, surname);
 		this.studentID = studentID;
 		this.groupID = -1;
 	}
 	
-	public Student(int studentID, String firstname, String surname, String login, String pwd, int groupID) {
-		super(firstname, surname, login, pwd);
+	public Student(int studentID, String login, String pwd, String firstname, String surname, int groupID) {
+		super(login, pwd, firstname, surname);
 		this.studentID = studentID;
 		this.groupID = groupID;
 	}

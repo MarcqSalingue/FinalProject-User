@@ -26,8 +26,8 @@ public class Admin extends User {
 	/**
 	 * The constructor.
 	 */
-	public Admin(int adminID, String firstname, String surname, String login, String pwd) {
-		super(firstname, surname, login, pwd);
+	public Admin(int adminID, String login, String pwd, String firstname, String surname) {
+		super(login, pwd, firstname, surname);
 		this.adminID = adminID;
 	}
 

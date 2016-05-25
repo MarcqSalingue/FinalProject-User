@@ -26,8 +26,8 @@ public class Teacher extends User {
 	/**
 	 * The constructor.
 	 */
-	public Teacher(int teacherID, String firstname, String surname, String login, String pwd) {
-		super(firstname, surname, login, pwd);
+	public Teacher(int teacherID, String login, String pwd, String firstname, String surname) {
+		super(login, pwd, firstname, surname);
 		this.teacherID = teacherID;
 	}
 

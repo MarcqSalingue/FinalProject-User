@@ -11,8 +11,6 @@ import userModel.UserDB;
  * 
  */
 
-//TODO Classe à modifier
-
 public class UserController implements IUserController
 {
 	
@@ -36,8 +34,7 @@ public class UserController implements IUserController
 
 	@Override
 	public String getUserName(String userLogin) {
-		// TODO Auto-generated method stub
-		return null;
+		return userDB.getUserName(userLogin);
 	}
 
 	@Override
@@ -47,8 +44,7 @@ public class UserController implements IUserController
 
 	@Override
 	public int getStudentGroup(String studentLogin) {
-		// TODO Auto-generated method stub
-		return 0;
+		return userDB.getStudentGroup(studentLogin);
 	}
 
 	@Override
@@ -75,63 +71,54 @@ public class UserController implements IUserController
 	}
 
 	@Override
-	public boolean addGroup(String adminLogin, int groupId) {
-		// TODO Auto-generated method stub
-		return false;
+	public boolean addGroup(String adminLogin, int groupID) {
+		return userDB.addGroup(adminLogin, groupID);
 	}
 
 	@Override
-	public boolean removeGroup(String adminLogin, int groupId) {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	@Override
-	public boolean associateStudToGroup(String adminLogin, String studentLogin, int groupId) {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	@Override
-	public String[] usersToString() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public String[] usersLoginToString() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public String[] studentsLoginToString() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public String[] groupsIdToString() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public String[] groupsToString() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public boolean loadDB() {
-		userDB.loadDB();
+	public boolean removeGroup(String adminLogin, int groupID) {
+		//return userDB.removeGroup(adminLogin, groupID);
 		return true;
 	}
 
 	@Override
+	public boolean associateStudToGroup(String adminLogin, String studentLogin, int groupID) {
+		return userDB.associateStudToGroup(adminLogin, studentLogin, groupID);
+	}
+
+	@Override
+	public String[] usersToString() {
+		return userDB.usersToString();
+	}
+
+	@Override
+	public String[] usersLoginToString() {
+		return userDB.usersLoginToString();
+	}
+
+	@Override
+	public String[] studentsLoginToString() {
+		return userDB.studentsLoginToString();
+	}
+
+	@Override
+	public String[] groupsIdToString() {
+		return userDB.groupsIdToString();
+	}
+
+	@Override
+	public String[] groupsToString() {
+		return userDB.groupsToString();
+	}
+
+	@Override
+	public boolean loadDB() {
+		return userDB.loadDB();
+	}
+
+	@Override
 	public boolean saveDB() {
-		// TODO Auto-generated method stub
-		return false;
+		return userDB.saveDB();
 	}
 
 	public UserDB getUserDB() {

@@ -4,6 +4,8 @@
 package userModel;
 
 import java.util.Hashtable;
+import java.util.Map;
+
 import userModel.Student;
 
 /**
@@ -38,7 +40,7 @@ public class Group {
 	 * Returns nbStudents.
 	 * @return nbStudents 
 	 */
-	public int getNbStudents() {
+	public int getNbStudents() {//Attention, ajouter ceux déjà présents dans la DB
 		return this.nbStudents;
 	}
 	
@@ -52,10 +54,15 @@ public class Group {
 	
 	public void removeStudentFromGroup(Student studentToRemove) {
 		if (this.groupTable.get(studentToRemove.getStudentID()) != null) {
+			System.out.println("Je suis rentré ds Groue");
 			studentToRemove.setGroupID(-1);
 			this.groupTable.remove(studentToRemove.getStudentID());
 			--this.nbStudents;
 		}
+	}
+
+	public Hashtable getStudentsFromGroup() {
+		return this.groupTable;
 	}
 	
 }
