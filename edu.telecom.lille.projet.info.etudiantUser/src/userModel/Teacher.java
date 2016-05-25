@@ -17,7 +17,7 @@ public class Teacher extends User {
 	/**
 	 * Description of the property teacherID.
 	 */
-	protected Integer teacherID = Integer.valueOf(0);
+	private int teacherID;
 
 	// Start of user code (user defined attributes for Teacher)
 
@@ -27,27 +27,15 @@ public class Teacher extends User {
 	 * The constructor.
 	 */
 	public Teacher(int teacherID, String firstname, String surname, String login, String pwd) {
-		super(firstname, surname, login, pwd, "Teacher");
+		super(firstname, surname, login, pwd);
+		this.teacherID = teacherID;
 	}
 
-	/**
-	 * Description of the method getTeacherID.
-	 * @param adminLogin 
-	 * @param teacherLogin 
-	 */
-	public void getTeacherID(String adminLogin, Integer teacherLogin) {
-		// Start of user code for method getTeacherID
-		// End of user code
-	}
-
-	// Start of user code (user defined methods for Teacher)
-
-	// End of user code
 	/**
 	 * Returns teacherID.
 	 * @return teacherID 
 	 */
-	public Integer getTeacherID() {
+	public int getTeacherID() {
 		return this.teacherID;
 	}
 

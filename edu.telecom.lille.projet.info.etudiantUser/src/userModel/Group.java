@@ -3,11 +3,8 @@
  *******************************************************************************/
 package userModel;
 
-import java.util.HashSet;
-
-// Start of user code (user defined imports)
-
-// End of user code
+import java.util.Hashtable;
+import userModel.Student;
 
 /**
  * Description of Group.
@@ -15,75 +12,50 @@ import java.util.HashSet;
  * @author humar
  */
 public class Group {
-	/**
-	 * Description of the property nbStudents.
-	 */
-	protected Integer nbStudents = Integer.valueOf(0);
-
-	/**
-	 * Description of the property students.
-	 */
-	public HashSet<Student> students = new HashSet<Student>();
-
-	/**
-	 * Description of the property groupID.
-	 */
-	protected Integer groupID = Integer.valueOf(0);
-
-	// Start of user code (user defined attributes for Group)
-
-	// End of user code
+	
+	public Hashtable groupTable;
+	protected int groupID;
+	protected int nbStudents;
 
 	/**
 	 * The constructor.
 	 */
-	public Group() {
-		// Start of user code constructor for Group)
-		super();
-		// End of user code
-	}
-
-	// Start of user code (user defined methods for Group)
-
-	// End of user code
-	/**
-	 * Returns nbStudents.
-	 * @return nbStudents 
-	 */
-	public Integer getNbStudents() {
-		return this.nbStudents;
-	}
-
-	/**
-	 * Sets a value to attribute nbStudents. 
-	 * @param newNbStudents 
-	 */
-	public void setNbStudents(Integer newNbStudents) {
-		this.nbStudents = newNbStudents;
-	}
-
-	/**
-	 * Returns students.
-	 * @return students 
-	 */
-	public HashSet<Student> getStudents() {
-		return this.students;
+	public Group(int groupID) {
+		this.groupID = groupID;
+		this.nbStudents = 0;
+		this.groupTable = new Hashtable();
 	}
 
 	/**
 	 * Returns groupID.
 	 * @return groupID 
 	 */
-	public Integer getGroupID() {
+	public int getGroupID() {
 		return this.groupID;
 	}
-
+	
 	/**
-	 * Sets a value to attribute groupID. 
-	 * @param newGroupID 
+	 * Returns nbStudents.
+	 * @return nbStudents 
 	 */
-	public void setGroupID(Integer newGroupID) {
-		this.groupID = newGroupID;
+	public int getNbStudents() {
+		return this.nbStudents;
 	}
-
+	
+	public void addStudentToGroup(Student studentToAdd) {
+		if (this.groupTable.get(studentToAdd.getStudentID()) == null) {
+			this.groupTable.put(studentToAdd.getStudentID(), studentToAdd);
+			studentToAdd.setGroupID(this.groupID);
+			++this.nbStudents;
+		}
+	}
+	
+	public void removeStudentFromGroup(Student studentToRemove) {
+		if (this.groupTable.get(studentToRemove.getStudentID()) != null) {
+			studentToRemove.setGroupID(-1);
+			this.groupTable.remove(studentToRemove.getStudentID());
+			--this.nbStudents;
+		}
+	}
+	
 }

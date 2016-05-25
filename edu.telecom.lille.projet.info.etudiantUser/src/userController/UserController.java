@@ -30,7 +30,7 @@ public class UserController implements IUserController
 	 * 		Fichier XML contenant la base de données d'utilisateurs
 	 */
 	public UserController(String userfile){
-		UserDB userDB=new UserDB(userfile);
+		UserDB userDB = new UserDB(userfile);
 		this.setUserDB(userDB);
 	}
 

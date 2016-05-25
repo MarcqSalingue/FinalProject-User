@@ -14,55 +14,30 @@ import userModel.User;
  * @author humar
  */
 public class Student extends User {
-	/**
-	 * Description of the property studentID.
-	 */
-	protected Integer studentID = Integer.valueOf(0);
 
-	/**
-	 * Description of the property groupID.
-	 */
-	protected String groupID = "";
-
-	// Start of user code (user defined attributes for Student)
-
-	// End of user code
+	protected int studentID;
+	protected int groupID;
 
 	/**
 	 * The constructor.
 	 */
+	public Student(int studentID, String firstname, String surname, String login, String pwd) {
+		super(firstname, surname, login, pwd);
+		this.studentID = studentID;
+		this.groupID = -1;
+	}
+	
 	public Student(int studentID, String firstname, String surname, String login, String pwd, int groupID) {
-		super(firstname, surname, login, pwd, "Student");
+		super(firstname, surname, login, pwd);
+		this.studentID = studentID;
+		this.groupID = groupID;
 	}
 
-	/**
-	 * Description of the method getStudentID.
-	 * @param adminLogin 
-	 * @param studentLogin 
-	 */
-	public void getStudentID(String adminLogin, String studentLogin) {
-		// Start of user code for method getStudentID
-		// End of user code
-	}
-
-	/**
-	 * Description of the method getGroupID.
-	 * @param adminLogin 
-	 * @param studentLogin 
-	 */
-	public void getGroupID(String adminLogin, String studentLogin) {
-		// Start of user code for method getGroupID
-		// End of user code
-	}
-
-	// Start of user code (user defined methods for Student)
-
-	// End of user code
 	/**
 	 * Returns studentID.
 	 * @return studentID 
 	 */
-	public Integer getStudentID() {
+	public int getStudentID() {
 		return this.studentID;
 	}
 
@@ -78,7 +53,7 @@ public class Student extends User {
 	 * Returns groupID.
 	 * @return groupID 
 	 */
-	public String getGroupID() {
+	public int getGroupID() {
 		return this.groupID;
 	}
 
@@ -86,7 +61,7 @@ public class Student extends User {
 	 * Sets a value to attribute groupID. 
 	 * @param newGroupID 
 	 */
-	public void setGroupID(String newGroupID) {
+	public void setGroupID(int newGroupID) {
 		this.groupID = newGroupID;
 	}
 

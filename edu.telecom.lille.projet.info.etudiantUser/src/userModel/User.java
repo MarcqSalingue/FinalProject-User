@@ -13,44 +13,17 @@ package userModel;
  * @author humar
  */
 public class User {
-	/**
-	 * Description of the property login.
-	 */
-	protected String login = "";
 
-	/**
-	 * Description of the property pwd.
-	 */
-	protected String pwd = "";
-
-	/**
-	 * Description of the property firstname.
-	 */
-	protected String firstname = "";
-
-	/**
-	 * Description of the property surname.
-	 */
-	protected String surname = "";
-
-	/**
-	 * Description of the property class.
-	 */
-	protected String userClass = "";
+	private String login = "";
+	private String pwd = "";
+	private String firstname = "";
+	private String surname = "";
 	
-	// Start of user code (user defined attributes for User)
-	
-	// End of user code
-	
-	/**
-	 * The constructor.
-	 */
-	public User(String firstname, String surname, String login, String pwd, String classe) {
-		this.setFirstname(firstname);
-		this.setSurname(surname);
-		this.setLogin(login);
-		this.setPwd(pwd);
-		this.setUserClass(classe);
+	public User(String firstname, String surname, String login, String pwd) {
+		this.firstname = firstname;
+		this.surname = surname;
+		this.login = login;
+		this.pwd = pwd;
 	}
 	
 	public User() {
@@ -118,22 +91,6 @@ public class User {
 	 */
 	public void setSurname(String newSurname) {
 		this.surname = newSurname;
-	}
-
-	/**
-	 * Returns class.
-	 * @return class 
-	 */
-	public String getUserClass() {
-		return this.userClass;
-	}
-
-	/**
-	 * Sets a value to attribute class. 
-	 * @param newClass 
-	 */
-	public void setUserClass(String newClass) {
-	    this.userClass = newClass;
 	}
 
 }

@@ -27,26 +27,10 @@ import userModel.User;
 //TODO Classe Ã  modifier
 
 public class UserDB {
-	
 
-	/**
-	 * Description of the property groups.
-	 */
-	public List<Group> groupList = new LinkedList<Group>();
-
-	/**
-	 * Description of the property file.
-	 */
+	public Hashtable groupTable;
 	private String file = "";
-
-	/**
-	 * Description of the property users.
-	 */
-	public List<User> userList = new LinkedList<User>();
-
-	// Start of user code (user defined attributes for UserDB)
-
-	// End of user code
+	public Hashtable userTable;
 	
 	/**
 	 * 
@@ -69,7 +53,6 @@ public class UserDB {
 	 * @return 
 	 * 		Le nom du fichier qui contient la base de donnÃ©es.
 	 */
-	
 	public String getFile() {
 		return this.file;
 	}
@@ -80,7 +63,6 @@ public class UserDB {
 	 * @param file
 	 * 		Le nom du fichier qui contient la base de donnÃ©es.
 	 */
-	
 	public void setFile(String file) {
 		this.file = file;
 	}
@@ -90,74 +72,64 @@ public class UserDB {
 	 */
 	public boolean loadDB() {
 
-		SAXBuilder sax;
-		sax = new SAXBuilder();
+		SAXBuilder builder;
+		builder = new SAXBuilder();
 		Document document;
 		document = null;
 		Element roof;
-		String login, pwd, firstname, surname, id, group;
-		//Object object;
+		String login, pwd, firstname, surname;
+		int ID, groupID;
 			        
-		try { //on essaye d'ouvrir le fichier
-			document = sax.build(new File(this.file));
+		try {
+			document = builder.build(new File(this.file));
 		} catch (Exception v0) {}
 			  
-		if(document != null) { //si on arrive à ouvrir le fichier
-			//On initialise un nouvel élément racine avec l'élément racine du document.
+		if(document != null) {
 		    roof = document.getRootElement();
-			//On descend d'un cran
+			
 		    Element roofStudent = roof.getChild("Students");   
 		    Element roofAdmin = roof.getChild("Administrators");
 		    Element roofTeacher = roof.getChild("Teachers");
-			//on récupère la liste des étudiants
+			
 			List<Element> studentList = roofStudent.getChildren("Student");
 			List<Element> adminList = roofAdmin.getChildren("Administrator");
 			List<Element> teacherList = roofTeacher.getChildren("Teacher");
 
 			for(int i = 0 ; i < studentList.size() ; i++) {
 				List<Element> student = studentList.get(i).getChildren();
-				//On enregistre dans les variables
+				
 				login = student.get(0).getText();
 				firstname = student.get(1).getText();
 				surname = student.get(2).getText();
 				pwd = student.get(3).getText();
-				id = student.get(4).getText();
-				group = student.get(5).getText();
-				//on crée l'objet Etudiant
-				Student studentCreated = new Student(Integer.parseInt(id), firstname, surname, login, pwd, Integer.parseInt(group));
-				//on l'ajoute dans la liste des Utilisateurs
-				userList.add(studentCreated);
-				if (group != "-1") {
-					//associateStudToGroup(login, group);
-				}
+				ID = Integer.parseInt(student.get(4).getText());
+				groupID = Integer.parseInt(student.get(5).getText());
+				
+				this.userTable.put(ID, new Student(ID, firstname, surname, login, pwd, groupID));
 			}	
 			
 			for(int i = 0 ; i < adminList.size() ; i++) {
 				List<Element> admin = adminList.get(i).getChildren();
-				//On enregistre dans les variables
+
 				login = admin.get(0).getText();
 				firstname = admin.get(1).getText();
 				surname = admin.get(2).getText();
 				pwd = admin.get(3).getText();
-				id = admin.get(4).getText();
-				//on crée l'objet Etudiant
-				Admin adminCreated = new Admin(Integer.parseInt(id), firstname, surname, login, pwd);
-				//on l'ajoute dans la liste des Utilisateurs
-				userList.add(adminCreated);
+				ID = Integer.parseInt(admin.get(4).getText());
+				
+				this.userTable.put(ID, new Admin(ID, firstname, surname, login, pwd));
 			}
 				
 			for(int i = 0 ; i < teacherList.size() ; i++) {
 				List<Element> teacher = teacherList.get(i).getChildren();
-				//On enregistre dans les variables
+
 				login = teacher.get(0).getText();
 				firstname = teacher.get(1).getText();
 				surname = teacher.get(2).getText();
 				pwd = teacher.get(3).getText();
-				id = teacher.get(4).getText();
-				//on crée l'objet Etudiant
-				Teacher teacherCreated = new Teacher(Integer.parseInt(id), firstname, surname, login, pwd);
-				//on l'ajoute dans la liste des Utilisateurs
-				userList.add(teacherCreated);
+				ID = Integer.parseInt(teacher.get(4).getText());
+
+				this.userTable.put(ID, new Teacher(ID, firstname, surname, login, pwd));
 			}
 			return true;
 		}
@@ -171,61 +143,6 @@ public class UserDB {
 		// Start of user code for method saveDB
 		// End of user code
 	}
-	
-	/**
-	 * Description of the method.
-	 * 
-	 * 
-	 */
-	public User findUserByLogin(String login) {
-		int i = 0;
-		
-	    for(i=0; i<userList.size(); i++) {
-	    	
-	    	if(userList.get(i).getLogin() == login) { return userList.get(i); }
-	    
-	    }
-	    
-	    return null;
-	    
-	}
-	  
-	/**
-	 * Description of the method.
-	 * 
-	 * 
-	 */
-	public Group findGroupByID(int groupID) {
-		int i = 0;
-		
-		for(i=0; i<groupList.size(); i++) {
-			
-			if(groupList.get(i).getGroupID() == groupID) { return groupList.get(i); }
-			
-		}
-		
-		return null;
-}
-	
-	/*public int findUserID(String login) {
-	    int i = 0;
-	    for(i=0; i<userList.size(); i++) {
-	     if(userList.get(i).getLogin() == login)
-	      return userList.get(i).get();
-	    }
-	    return -1;
-	   }
-	
-	public int findGroupID(int groupID) {
-	    int i = 0;
-	    for(i=0; i<group.size(); i++) {
-	     if(group.get(i).GetIdGroup() == id)
-	      return i;
-	    }
-	    return -1;
-	   }*/
-	
-	
 
 	/**
 	 * Description of the method associateStudToGroup.
@@ -234,11 +151,6 @@ public class UserDB {
 	 * @param groupID 
 	 */
 	public void associateStudToGroup(String adminLogin, String studentLogin, Integer groupID) {
-		boolean isAssociationDone = false;
-		if (this.findUserByLogin(adminLogin) instanceof Admin && this.findUserByLogin(studentLogin) != null 
-				&& this.findGroupByID(groupID) != null && this.findUserByLogin(studentLogin) instanceof Student) {
-			//if (this.findUserByLogin(studentLogin).get)
-		}
 		
 	}
 
@@ -247,65 +159,136 @@ public class UserDB {
 	 * Description of the method groupsIdToString.
 	 */
 	public void groupsIdToString() {
-		// Start of user code for method groupsIdToString
-		// End of user code
+		
 	}
 
 	/**
 	 * Description of the method usersLoginToString.
 	 */
 	public void usersLoginToString() {
-		// Start of user code for method usersLoginToString
-		//SAXBuilder builder = new SAXBuilder();
-		//File xmlFile = new File(this.file);
-		// End of user code
+	
 	}
 
 	/**
 	 * Description of the method studentsLoginToString.
 	 */
 	public void studentsLoginToString() {
-		// Start of user code for method studentsLoginToString
-		// End of user code
+		
 	}
 
 	/**
 	 * Description of the method usersToString.
 	 */
 	public void usersToString() {
-		// Start of user code for method usersToString
-		// End of user code
+	
 	}
 
 	/**
 	 * Description of the method groupsToString.
 	 */
 	public void groupsToString() {
-		// Start of user code for method groupsToString
-		// End of user code
-	}
-
-	/**
-	 * Returns groups.
-	 * @return groups 
-	 */
-	public List<Group> getGroups() {
-		return this.groupList;
-	}
-
-	/**
-	 * Returns users.
-	 * @return users 
-	 */
-	public List<User> getUsers() {
-		return this.userList;
+	
 	}
 	
+	/**
+	 * Description of the method addAdmin.
+	 * @param adminLogin 
+	 * @param newAdminLogin 
+	 * @param adminID 
+	 * @param firstname 
+	 * @param surname 
+	 * @param pwd 
+	 */
+	public void addAdmin(String adminLogin, String newAdminLogin, Integer adminID, String firstname, String surname,
+			String pwd) {
+	
+	}
+
+	/**
+	 * Description of the method addTeacher.
+	 * @param adminLogin 
+	 * @param newTeacherLogin 
+	 * @param teacherID 
+	 * @param firstname 
+	 * @param surname 
+	 */
+	public void addTeacher(String adminLogin, String newTeacherLogin, Integer teacherID, String firstname,
+			String surname) {
+	
+	}
+
+	/**
+	 * Description of the method addStudent.
+	 * @param adminLogin 
+	 * @param newStudentLogin 
+	 * @param studentID 
+	 * @param firstname 
+	 * @param surname 
+	 * @param pwd 
+	 */
+	public void addStudent(String adminLogin, String newStudentLogin, Integer studentID, String firstname,
+			String surname, String pwd) {
+		
+	}
+
+	/**
+	 * Description of the method removeUser.
+	 * @param adminLogin 
+	 * @param userLogin 
+	 */
+	public void removeUser(String adminLogin, String userLogin) {
+		
+	}
+
+	/**
+	 * Description of the method addGroup.
+	 * @param adminLogin 
+	 * @param groupID 
+	 */
+	public void addGroup(String adminLogin, Integer groupID) {
+	
+	}
+
+	/**
+	 * Description of the method removeGroup.
+	 * @param adminLogin 
+	 * @param groupID 
+	 */
+	public void removeGroup(String adminLogin, Integer groupID) {
+		
+	}
+
+	/**
+	 * Description of the method getStudentGroup.
+	 * @param studentLogin 
+	 */
+	public void getStudentGroup(String studentLogin) {
+		
+	}
+
 	/**
 	 * Description of the method getUserName.
 	 * @param userLogin 
 	 */
 	public void getUserName(String userLogin) {
+		
+	}
+	
+	/**
+	 * Description of the method getStudentID.
+	 * @param adminLogin 
+	 * @param studentLogin 
+	 */
+	public void getStudentID(String adminLogin, String studentLogin) {
+		
+	}
+
+	/**
+	 * Description of the method getGroupID.
+	 * @param adminLogin 
+	 * @param studentLogin 
+	 */
+	public void getGroupID(String adminLogin, String studentLogin) {
 		
 	}
 
@@ -318,12 +301,16 @@ public class UserDB {
 		String userClass = "";
 		boolean isUserFound = false;
 		User userFound = new User();
+		userFound = (User)this.userTable.get(userLogin);
 		
-		for (int index = 0 ; index < this.userList.size() ; index++) {
-			if (userLogin == this.userList.get(index).login && userPwd == this.userList.get(index).pwd) {
-				userFound = this.userList.get(index);
-				isUserFound = true;
-			}
+		if (userFound != null && userFound.getPwd().compareTo(userPwd) == 0) {
+			System.out.println("User Found.");
+			isUserFound = true;
+		}
+		
+		else {
+			System.out.println("Unknown User.");
+			isUserFound = false;
 		}
 		
 		if (isUserFound == true) {
