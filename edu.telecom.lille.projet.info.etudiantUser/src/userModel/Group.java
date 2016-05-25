@@ -14,8 +14,8 @@ import userModel.Student;
 public class Group {
 	
 	public Hashtable groupTable;
-	protected int groupID;
-	protected int nbStudents;
+	private int groupID;
+	private int nbStudents;
 
 	/**
 	 * The constructor.

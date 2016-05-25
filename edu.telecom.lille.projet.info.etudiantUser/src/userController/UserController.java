@@ -66,13 +66,12 @@ public class UserController implements IUserController
 	@Override
 	public boolean addStudent(String adminLogin, String newStudentLogin, int studentID, String firstname,
 			String surname, String pwd) {
-		return userDB.addAdmin(adminLogin, newStudentLogin, studentID, firstname, surname, pwd);
+		return userDB.addStudent(adminLogin, newStudentLogin, studentID, firstname, surname, pwd);
 	}
 
 	@Override
 	public boolean removeUser(String adminLogin, String userLogin) {
-		// TODO Auto-generated method stub
-		return false;
+		return userDB.removeUser(adminLogin, userLogin);
 	}
 
 	@Override

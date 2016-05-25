@@ -2,9 +2,11 @@ package userModel;
 
 import java.util.HashMap;
 import java.util.Hashtable;
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.io.File;
 import org.jdom2.Document;
 import org.jdom2.Element;
@@ -30,16 +32,13 @@ import userModel.User;
 
 public class UserDB {
 
-	public Hashtable groupTable;
 	private String file = "";
 	public Map userTable = new HashMap();
+	public Map groupTable = new HashMap();
 	
 	/**
 	 * 
 	 * Constructeur de UserDB. 
-	 * 
-	 * !!!!!!!!!!!! PENSEZ À AJOUTER UN ADMINISTRATEUR (su par exemple) QUI VOUS PERMETTRA DE CHARGER LA BASE DE DONNÉES AU DEMARRAGE DE L'APPLICATION !!!!!!
-	 * 
 	 * @param file
 	 * 		Le nom du fichier qui contient la base de données.
 	 */
@@ -184,8 +183,18 @@ public class UserDB {
 	/**
 	 * Description of the method usersToString.
 	 */
-	public void usersToString() {
-	
+	public String[] usersToString() {
+		String[] userString = new String[this.userTable.size()];
+		Set keys = userTable.keySet();
+		Iterator it = keys.iterator();
+		int i = 0;
+		while (it.hasNext()){
+		   String key = (String)it.next();
+		   User userTemp = (User)userTable.get(key);
+		   userString[i] = userTemp.getLogin();
+		   ++i;
+		}
+		return userString;
 	}
 
 	/**
@@ -225,7 +234,7 @@ public class UserDB {
 	 * @param firstname 
 	 * @param surname 
 	 */
-	public boolean addTeacher(String adminLogin, String newTeacherLogin, Integer teacherID, String firstname,
+	public boolean addTeacher(String adminLogin, String newTeacherLogin, int teacherID, String firstname,
 			String surname, String pwd) {
 		boolean isTeacherAdded = false;
 		//System.out.println("je rentre dans addTeacher");
@@ -251,9 +260,7 @@ public class UserDB {
 			String surname, String pwd) {
 		boolean isStudentAdded = false;
 		Student newStudent;
-		//System.out.println("je rentre dans addStudent");
 		if (this.userTable.get(adminLogin) instanceof Admin && this.userTable.get(newStudentLogin) == null) {
-			//System.out.println("je rentre dans le if de addStudent");
 			newStudent = new Student(studentID, firstname, surname, newStudentLogin, pwd);
 			this.userTable.put(newStudentLogin, newStudent);
 			isStudentAdded = true;
@@ -266,8 +273,19 @@ public class UserDB {
 	 * @param adminLogin 
 	 * @param userLogin 
 	 */
-	public void removeUser(String adminLogin, String userLogin) {
-		
+	public boolean removeUser(String adminLogin, String userLogin) {
+		boolean isUserRemoved = false;
+		System.out.println("COUCOUCOCUCOCUOCUCOUC");
+		User userToRemove;
+		if (this.userTable.get(adminLogin) instanceof Admin && this.userTable.containsKey(userLogin)) {
+			userToRemove = (User)this.userTable.get(userLogin);
+			if (userToRemove instanceof Student && ((Student)userToRemove).getGroupID() != -1) {
+				((Group)this.groupTable.get(((Student)userToRemove).getGroupID())).removeStudentFromGroup((Student)userToRemove);
+			}
+			this.userTable.remove(userLogin);
+			isUserRemoved = true;
+		}
+		return isUserRemoved;
 	}
 
 	/**
