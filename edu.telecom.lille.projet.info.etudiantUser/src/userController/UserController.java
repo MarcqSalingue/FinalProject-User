@@ -77,8 +77,7 @@ public class UserController implements IUserController
 
 	@Override
 	public boolean removeGroup(String adminLogin, int groupID) {
-		//return userDB.removeGroup(adminLogin, groupID);
-		return true;
+		return userDB.removeGroup(adminLogin, groupID);
 	}
 
 	@Override

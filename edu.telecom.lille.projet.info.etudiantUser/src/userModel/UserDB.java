@@ -150,7 +150,9 @@ public class UserDB {
 				List<Element> group = groupList.get(i).getChildren();
 			    
 				ID = Integer.parseInt(group.get(0).getText());
-			    this.groupTable.put(ID, new Group(ID));
+				Group newGroup = new Group(ID);
+			    this.groupTable.put(ID, newGroup);
+			    //((Group)this.groupTable.get(ID)).addStudentToGroup()     ; METTRE ICI DANS 
 			    
 			}
 			return true;
@@ -185,7 +187,7 @@ public class UserDB {
 			         
 			//Pour les groupes
 			while(groupEnumeration.hasMoreElements()) {
-				String key = (String)groupEnumeration.nextElement();
+				String key = String.valueOf(groupEnumeration.nextElement());
 				Element group = new Element("Group");
 				Element groupID = new Element("groupId");
 				groupID.setText(key);
@@ -293,14 +295,18 @@ public class UserDB {
 		if(this.userTable.get(adminLogin) instanceof Admin && this.userTable.get(studentLogin) instanceof Student) {
 			if(this.groupTable.get(groupID) instanceof Group) {
 				Group group = (Group)this.groupTable.get(groupID);
-				group.getStudentsFromGroup().put(studentLogin, this.userTable.get(studentLogin));
+				group.getStudentsFromGroup().put(groupID, this.userTable.get(studentLogin));
+				((Student)this.userTable.get(studentLogin)).setGroupID(groupID);
+				((Group)this.groupTable.get(groupID)).addStudentToGroup((Student)this.userTable.get(studentLogin));
 			}
-			else {
+/*			else {
 				addGroup(adminLogin, groupID);
 				Group group = (Group)this.groupTable.get(groupID);
-				group.getStudentsFromGroup().put(studentLogin, this.userTable.get(studentLogin));
-			}
-		return true;
+				group.getStudentsFromGroup().put(groupID, this.userTable.get(studentLogin));
+				((Student)this.userTable.get(studentLogin)).setGroupID(groupID);
+			}*/
+			saveDB();
+			return true;
 		}
 		return false;
 	}
@@ -314,7 +320,7 @@ public class UserDB {
 		Enumeration groupEnumeration = ((Hashtable) this.groupTable).keys();
 		int i = 0;
 		while(groupEnumeration.hasMoreElements()) {
-			String key = (String)groupEnumeration.nextElement();
+			String key = String.valueOf(groupEnumeration.nextElement());
 			groupsIDString[i] = key;
 			i++;
 		}
@@ -342,7 +348,7 @@ public class UserDB {
 	 * Description of the method studentsLoginToString.
 	 */
 	public String[] studentsLoginToString() {
-		String[] userLoginString = new String[this.groupTable.size()];//Trouver le nb de students (voir dans groupe?)
+		String[] userLoginString = new String[500];//Trouver le nb de students (voir dans groupe?)
 		Set keys = userTable.keySet();
 		Iterator it = keys.iterator();
 		int i = 0;
@@ -395,9 +401,8 @@ public class UserDB {
 			//on récupere l'étudiant
 			Hashtable table = group.getStudentsFromGroup();
 			Enumeration studentsEnum = table.keys();
-			System.out.println("ON Y EST");
 			while(studentsEnum.hasMoreElements()) {
-				String studentKey = (String)studentsEnum.nextElement();
+				Integer studentKey = (Integer)studentsEnum.nextElement();
 				Student currentStudent = (Student)table.get(studentKey);
 				//maintenant on affiche
 				groupString[i] = currentStudent.getLogin() + "|" + currentStudent.getFirstname() + "|" + currentStudent.getSurname()+ "|" + currentStudent.getPwd() + "|" + currentStudent.getStudentID() + "|" + currentStudent.getGroupID();
@@ -484,9 +489,7 @@ public class UserDB {
 		if (this.userTable.get(adminLogin) instanceof Admin && this.userTable.containsKey(userLogin)) {
 			userToRemove = (User)this.userTable.get(userLogin);
 			if (userToRemove instanceof Student && ((Student)userToRemove).getGroupID() != -1) {
-				System.out.println("COUOCU");
 				((Group)this.groupTable.get(((Student)userToRemove).getGroupID())).removeStudentFromGroup((Student)userToRemove);
-				System.out.println("COUOCU2");
 			}
 			this.userTable.remove(userLogin);
 			isUserRemoved = true;
@@ -515,8 +518,15 @@ public class UserDB {
 	 * @param adminLogin 
 	 * @param groupID 
 	 */
-	public boolean removeGroup(String adminLogin, Integer groupID) {
-		return false;
+	public boolean removeGroup(String adminLogin, int groupID) {
+		boolean isGroupRemoved = false;
+		Group groupToRemove;
+		if (this.userTable.get(adminLogin) instanceof Admin && this.groupTable.containsKey(groupID)) {
+			groupToRemove = (Group)this.groupTable.get(groupID);
+			this.groupTable.remove(groupToRemove);
+			saveDB();
+		}
+		return isGroupRemoved;
 	}
 
 	/**

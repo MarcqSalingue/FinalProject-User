@@ -46,6 +46,7 @@ public class Group {
 	
 	public void addStudentToGroup(Student studentToAdd) {
 		if (this.groupTable.get(studentToAdd.getStudentID()) == null) {
+			System.out.println("Je passe ici");
 			this.groupTable.put(studentToAdd.getStudentID(), studentToAdd);
 			studentToAdd.setGroupID(this.groupID);
 			++this.nbStudents;
@@ -54,8 +55,8 @@ public class Group {
 	
 	public void removeStudentFromGroup(Student studentToRemove) {
 		if (this.groupTable.get(studentToRemove.getStudentID()) != null) {
-			System.out.println("Je suis rentré ds Groue");
 			studentToRemove.setGroupID(-1);
+			System.out.println("Je passe ici");
 			this.groupTable.remove(studentToRemove.getStudentID());
 			--this.nbStudents;
 		}
