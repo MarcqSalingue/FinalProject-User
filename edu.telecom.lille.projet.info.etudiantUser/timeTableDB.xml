@@ -16,7 +16,11 @@
   </Rooms>
   <TimeTables>
     <TimeTable>
-      <GroupId>47</GroupId>
+      <GroupId>2</GroupId>
+      <Books />
+    </TimeTable>
+    <TimeTable>
+      <GroupId>12</GroupId>
       <Books />
     </TimeTable>
   </TimeTables>

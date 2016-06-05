@@ -10,7 +10,7 @@ import userModel.Student;
 /**
  * La classe Group représente les groupes d'étudiants.
  * 
- * @author Hugo Marcq
+ * @author Hugo Marcq - Joffrey Salingue
  * @version 06/2016
  * 
  */
@@ -19,7 +19,7 @@ public class Group {
 	/**
 	 * Contient la table d'étudiants appartenant au groupe courant.
 	 */
-	public Hashtable groupTable;
+	private Hashtable groupTable;
 	
 	/**
 	 * Contient l'identifiant du groupe courant.
@@ -90,6 +90,30 @@ public class Group {
 		}
 	}
 
+	/**
+	 * Incrémente le nombre d'étudiants dans le groupe. 
+	 */
+	public void IncrementStudentNb() {
+		this.nbStudents = this.nbStudents + 1;
+	}
+	
+	/**
+	 * Décrémente le nombre d'étudiants dans le groupe.
+	 */
+	public void DecrementStudentNb() {
+		this.nbStudents = this.nbStudents - 1;
+	}
+	
+	/**
+	 * Initialise la table contenant les étudiants appartenant au groupe.
+	 * 
+	 * @param groupTable
+	 * 		Hashtable contenant les utilisateurs du groupe, à affecter à l'attribut groupTable.
+	 */
+	public void setGroupTable(Hashtable groupTable) {
+		this.groupTable = groupTable;
+	}
+	
 	/**
 	 * Retourne la table contenant les étudiants appartenant au groupe.
 	 * 

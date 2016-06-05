@@ -6,7 +6,7 @@ import userModel.UserDB;
  * Elle contient un attribut correspondant à la base de données utilisateurs.
  * Elle contient toutes les fonctions de l'interface IUserController.
  * 
- * @author Hugo Marcq
+ * @author Hugo Marcq - Joffrey Salingue
  * @version 06/2016
  * 
  */
@@ -139,7 +139,5 @@ public class UserController implements IUserController
 		this.userDB = userDB;
 	}
 	
-	
-
 }
 

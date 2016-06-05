@@ -9,7 +9,7 @@ package userModel;
  * User est une classe mère de Student (étudiants), Teacher (professeurs), et Admin (administrateurs).
  * En effet, chacun de ces types d'utilisateurs possède la même architecture (login, mot de passe, etc.) mais dispose de fonctionnalités particulières.
  * 
- * @author Hugo Marcq
+ * @author Hugo Marcq - Joffrey Salingue
  * @version 06/2016
  * 
  */

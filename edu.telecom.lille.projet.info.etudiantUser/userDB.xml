@@ -2,26 +2,20 @@
 <UsersDB>
   <Groups>
     <Group>
-      <groupId>5</groupId>
+      <groupId>2</groupId>
     </Group>
     <Group>
-      <groupId>47</groupId>
-    </Group>
-    <Group>
-      <groupId>1</groupId>
-    </Group>
-    <Group>
-      <groupId>45</groupId>
+      <groupId>12</groupId>
     </Group>
   </Groups>
   <Students>
     <Student>
-      <login>hmarcq</login>
-      <firstname>Hugo</firstname>
-      <surname>Marcq</surname>
-      <pwd>211195</pwd>
-      <studentId>2010</studentId>
-      <groupId>5</groupId>
+      <login>Coucou</login>
+      <firstname>oizefoebef</firstname>
+      <surname>jzofhezh</surname>
+      <pwd>fezjozefho</pwd>
+      <studentId>25</studentId>
+      <groupId>2</groupId>
     </Student>
     <Student>
       <login>Student</login>
@@ -29,39 +23,17 @@
       <surname>stud</surname>
       <pwd>Etudiant</pwd>
       <studentId>1025</studentId>
-      <groupId>45</groupId>
+      <groupId>12</groupId>
     </Student>
   </Students>
-  <Teachers>
-    <Teacher>
-      <login>themennesson</login>
-      <firstname>José</firstname>
-      <surname>Mennesson</surname>
-      <pwd>cMoiLeProf</pwd>
-      <teacherId>1010</teacherId>
-    </Teacher>
-    <Teacher>
-      <login>MF</login>
-      <firstname>Morgan</firstname>
-      <surname>Freeman</surname>
-      <pwd>iknowall</pwd>
-      <teacherId>1002</teacherId>
-    </Teacher>
-  </Teachers>
+  <Teachers />
   <Administrators>
-    <Administrator>
-      <login>cmarcq</login>
-      <firstname>Christelle</firstname>
-      <surname>Marcq</surname>
-      <pwd>1010</pwd>
-      <adminId>2054</adminId>
-    </Administrator>
     <Administrator>
       <login>su</login>
       <firstname>su</firstname>
       <surname>su</surname>
       <pwd>superUser</pwd>
-      <adminId>0</adminId>
+      <adminId>10</adminId>
     </Administrator>
   </Administrators>
 </UsersDB>

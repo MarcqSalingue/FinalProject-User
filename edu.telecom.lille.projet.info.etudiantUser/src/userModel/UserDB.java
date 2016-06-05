@@ -31,7 +31,7 @@ import java.io.OutputStream;
  * La structure du fichier XML devra Ãªtre la mÃªme que celle du fichier userDB.xml.
  * @see <a href="../../userDB.xml">userDB.xml</a> 
  * 
- * @author Hugo Marcq
+ * @author Hugo Marcq - Joffrey Salingue
  * @version 06/2016
  * 
  */
@@ -117,6 +117,12 @@ public class UserDB {
 			List<Element> teacherList = roofTeacher.getChildren("Teacher");
 			List<Element> groupList = roofGroup.getChildren("Group");
 
+			for(int i = 0; i < groupList.size() ; i++) {
+				List<Element> group = groupList.get(i).getChildren();
+				ID = Integer.parseInt(group.get(0).getText());
+			    this.groupTable.put(ID, new Group(ID));
+			}
+			
 			for(int i = 0 ; i < studentList.size() ; i++) {
 				List<Element> student = studentList.get(i).getChildren();
 				
@@ -128,6 +134,7 @@ public class UserDB {
 				groupID = Integer.parseInt(student.get(5).getText());
 				
 				this.userTable.put(login, new Student(ID, login, pwd, firstname, surname, groupID));
+				associateStudToGroup("su",login, groupID);
 			}	
 			
 			for(int i = 0 ; i < adminList.size() ; i++) {
@@ -152,16 +159,6 @@ public class UserDB {
 				ID = Integer.parseInt(teacher.get(4).getText());
 
 				this.userTable.put(login, new Teacher(ID, login, pwd, firstname, surname));
-			}
-		
-			for(int i = 0; i < groupList.size() ; i++) {
-				List<Element> group = groupList.get(i).getChildren();
-			    
-				ID = Integer.parseInt(group.get(0).getText());
-				Group newGroup = new Group(ID);
-			    this.groupTable.put(ID, newGroup);
-			    //((Group)this.groupTable.get(ID)).addStudentToGroup()     ; METTRE ICI DANS 
-			    
 			}
 			return true;
 		}
@@ -316,6 +313,7 @@ public class UserDB {
 				group.getStudentsFromGroup().put(groupID, this.userTable.get(studentLogin));
 				((Student)this.userTable.get(studentLogin)).setGroupID(groupID);
 				((Group)this.groupTable.get(groupID)).addStudentToGroup((Student)this.userTable.get(studentLogin));
+				group.IncrementStudentNb();
 			}
 /*			else {
 				addGroup(adminLogin, groupID);
@@ -338,7 +336,7 @@ public class UserDB {
 	 */
 	public String[] groupsIdToString() {
 		String[] groupsIDString = new String[this.groupTable.size()];
-		Enumeration groupEnumeration = ((Hashtable) this.groupTable).keys();
+		Enumeration groupEnumeration = this.groupTable.keys();
 		int i = 0;
 		while(groupEnumeration.hasMoreElements()) {
 			String key = String.valueOf(groupEnumeration.nextElement());
@@ -443,8 +441,8 @@ public class UserDB {
 				Student currentStudent = (Student)table.get(studentKey);
 				//maintenant on affiche
 				groupString[i] = currentStudent.getLogin() + "|" + currentStudent.getFirstname() + "|" + currentStudent.getSurname()+ "|" + currentStudent.getPwd() + "|" + currentStudent.getStudentID() + "|" + currentStudent.getGroupID();
-				i++;
 			}
+			i++;
 		}
 		   return groupString;
 	}
@@ -564,6 +562,7 @@ public class UserDB {
 			}
 			this.userTable.remove(userLogin);
 			isUserRemoved = true;
+			
 			saveDB();
 		}
 		return isUserRemoved;
@@ -589,6 +588,21 @@ public class UserDB {
 		  return isGroupAdded;
 	}
 
+	public String convertIdtoLogin(int id) {
+		Enumeration userList = userTable.keys();
+		while(userList.hasMoreElements()) {
+			String key = (String)userList.nextElement();
+			User utilisateur = (User)this.userTable.get(key);
+			if (utilisateur instanceof Student) {
+			Student stud = (Student)userTable.get(key);
+			if (stud.getStudentID() == id) {
+				return stud.getLogin();
+			}
+			}
+		}
+		return "";
+	}
+	
 	/**
 	 * Fonction permettant de supprimer un groupe. Elle renvoie true si le groupe a Ã©tÃ© supprimÃ© et false sinon. 
 	 * 
@@ -601,13 +615,24 @@ public class UserDB {
 	 */
 	public boolean removeGroup(String adminLogin, int groupID) {
 		boolean isGroupRemoved = false;
-		Group groupToRemove;
-		if (this.userTable.get(adminLogin) instanceof Admin && this.groupTable.containsKey(groupID)) {
+		if (this.userTable.get(adminLogin) instanceof Admin) {
+			Group groupToRemove;
+			
 			groupToRemove = (Group)this.groupTable.get(groupID);
-			this.groupTable.remove(groupToRemove);
-			saveDB();
+			Hashtable students = groupToRemove.getStudentsFromGroup();
+			Enumeration userList = students.keys();
+			
+			while(userList.hasMoreElements()) {
+				int key = (int)userList.nextElement();
+				Student stud = (Student)this.userTable.get(convertIdtoLogin(key));
+				stud.setGroupID(-1);
+				this.userTable.replace(convertIdtoLogin(key), stud);
+			}
+		this.groupTable.remove(groupID);
+		saveDB();
+		isGroupRemoved = true;
 		}
-		return isGroupRemoved;
+	return isGroupRemoved;
 	}
 
 	/**

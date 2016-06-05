@@ -9,7 +9,7 @@ import userModel.User;
  * La classe Teacher représente les professeurs.
  * Elle hérite de "User" puiqu'un professeur est simplement un utilisateur bénéficiant de fonctionnalités particulières.
  * 
- * @author Hugo Marcq
+ * @author Hugo Marcq - Joffrey Salingue
  * @version 06/2016
  * 
  */

@@ -9,7 +9,7 @@ import userModel.User;
  * La classe Student représente les étudiants.
  * Elle hérite de "User" puiqu'un étudiant est simplement un utilisateur bénéficiant de fonctionnalités particulières.
  * 
- * @author Hugo Marcq
+ * @author Hugo Marcq - Joffrey Salingue
  * @version 06/2016
  * 
  */
