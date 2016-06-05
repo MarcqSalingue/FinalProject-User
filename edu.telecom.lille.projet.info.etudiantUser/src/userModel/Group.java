@@ -5,22 +5,38 @@ package userModel;
 
 import java.util.Hashtable;
 import java.util.Map;
-
 import userModel.Student;
 
 /**
- * Description of Group.
+ * La classe Group représente les groupes d'étudiants.
  * 
- * @author humar
+ * @author Hugo Marcq
+ * @version 06/2016
+ * 
  */
 public class Group {
 	
+	/**
+	 * Contient la table d'étudiants appartenant au groupe courant.
+	 */
 	public Hashtable groupTable;
+	
+	/**
+	 * Contient l'identifiant du groupe courant.
+	 */
 	private int groupID;
+	
+	/**
+	 * Contient le nombre d'étudiants du groupe courant.
+	 */
 	private int nbStudents;
 
 	/**
-	 * The constructor.
+	 * Contructeur de Group permettant de créer un groupe d'étudiants, qui contient son identifiant en paramètre.
+	 * 
+	 * @param groupID
+	 * 		Entier correspondant à l'identifiant du groupe.
+	 * 
 	 */
 	public Group(int groupID) {
 		this.groupID = groupID;
@@ -29,39 +45,56 @@ public class Group {
 	}
 
 	/**
-	 * Returns groupID.
-	 * @return groupID 
+	 * Retourne l'ID du groupe, l'attribut groupID.
+	 * 
+	 * @return groupID.
 	 */
 	public int getGroupID() {
 		return this.groupID;
 	}
 	
 	/**
-	 * Returns nbStudents.
+	 * Retourne le nombre d'étudiants présents dans le groupe courant.
+	 * 
 	 * @return nbStudents 
 	 */
 	public int getNbStudents() {//Attention, ajouter ceux déjà présents dans la DB
 		return this.nbStudents;
 	}
 	
+	/**
+	 * Méthode permettant d'ajouter un étudiant à la Hashtable contenant les étudiants du groupe.
+	 * 
+	 * @param studentToAdd 
+	 * 		L'objet étudiant à ajouter au groupe.
+	 */
 	public void addStudentToGroup(Student studentToAdd) {
 		if (this.groupTable.get(studentToAdd.getStudentID()) == null) {
-			System.out.println("Je passe ici");
 			this.groupTable.put(studentToAdd.getStudentID(), studentToAdd);
 			studentToAdd.setGroupID(this.groupID);
 			++this.nbStudents;
 		}
 	}
 	
+	/**
+	 * Méthode permettant de retirer un étudiant de la Hashtable contenant les étudiants du groupe.
+	 * 
+	 * @param studentToRemove 
+	 * 		L'objet étudiant à supprimer du groupe.
+	 */
 	public void removeStudentFromGroup(Student studentToRemove) {
 		if (this.groupTable.get(studentToRemove.getStudentID()) != null) {
 			studentToRemove.setGroupID(-1);
-			System.out.println("Je passe ici");
 			this.groupTable.remove(studentToRemove.getStudentID());
 			--this.nbStudents;
 		}
 	}
 
+	/**
+	 * Retourne la table contenant les étudiants appartenant au groupe.
+	 * 
+	 * @return groupTable 
+	 */
 	public Hashtable getStudentsFromGroup() {
 		return this.groupTable;
 	}

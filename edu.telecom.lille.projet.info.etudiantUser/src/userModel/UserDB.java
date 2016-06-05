@@ -27,35 +27,40 @@ import java.io.OutputStream;
 
 /**
  * 
- * Cette classe gére la base de données d'utilisateurs. Elle doit permettre de sauvegarder et charger les utilisateurs et les groupes à partir d'un fichier XML. 
- * La structure du fichier XML devra être la même que celle du fichier userDB.xml.
+ * Cette classe gÃ©re la base de donnÃ©es d'utilisateurs. Elle doit permettre de sauvegarder et charger les utilisateurs et les groupes Ã  partir d'un fichier XML. 
+ * La structure du fichier XML devra Ãªtre la mÃªme que celle du fichier userDB.xml.
  * @see <a href="../../userDB.xml">userDB.xml</a> 
  * 
- * @author Jose Mennesson (Mettre à jour)
- * @version 04/2016 (Mettre à jour)
+ * @author Hugo Marcq
+ * @version 06/2016
  * 
  */
-
-//TODO Classe à modifier
-
 public class UserDB {
 
+	/**
+	 * Contient le nom du fichier XML utilisé pour sauvegarger la base de données.
+	 */
 	private String file = "";
+	
+	/**
+	 * Table contenant la totalité des utilisateurs de la base de données.
+	 */
 	public Hashtable userTable = new Hashtable();
+	
+	/**
+	 * Table contenant la totalité des groupes de la base de données.
+	 */
 	public Hashtable groupTable = new Hashtable();
 	
 	/**
-	 * 
 	 * Constructeur de UserDB. 
 	 * @param file
-	 * 		Le nom du fichier qui contient la base de données.
+	 * 		Le nom du fichier qui contient la base de donnÃ©es.
 	 */
 	public UserDB(String file){
 		super();
 		this.setFile(file);
 		this.userTable.put("su", new Admin(10, "su", "superUser", "su", "su"));
-		this.userTable.put("hmarcq", new Student(2010, "hmarcq", "211195", "Hugo", "Marcq"));
-		this.userTable.put("themennesson", new Teacher(1010, "themennesson", "cMoiLeProf", "Jos�", "Mennesson"));
 		this.loadDB();
 	}
 	
@@ -63,7 +68,7 @@ public class UserDB {
 	 * Getter de file
 	 * 
 	 * @return 
-	 * 		Le nom du fichier qui contient la base de données.
+	 * 		Le nom du fichier qui contient la base de donnÃ©es.
 	 */
 	public String getFile() {
 		return this.file;
@@ -73,14 +78,17 @@ public class UserDB {
 	 * Setter de file
 	 * 
 	 * @param file
-	 * 		Le nom du fichier qui contient la base de données.
+	 * 		Le nom du fichier qui contient la base de donnÃ©es.
 	 */
 	public void setFile(String file) {
 		this.file = file;
 	}
 	
 	/**
-	 * Description of the method loadDB.
+	 * Fonction chargeant la base de donnÃ©e contenue dans un fichier XML.
+	 * 
+	 * @return
+	 * 		Un boolean indiquant si le chargement a bien Ã©tÃ© rÃ©alisÃ©e.
 	 */
 	public boolean loadDB() {
 
@@ -161,7 +169,10 @@ public class UserDB {
 	}
 
 	/**
-	 * Description of the method saveDB.
+	 * Fonction sauvegardant la base de donnÃ©e dans un fichier XML.
+	 * 
+	 * @return
+	 * 		Un boolean indiquant si la sauvegarde a bien Ã©tÃ© rÃ©alisÃ©e.
 	 */
 	public boolean saveDB() {
 		Enumeration userEnumeration = (this.userTable).keys();
@@ -182,7 +193,7 @@ public class UserDB {
 			document = sax.build(new File(this.file));
 		} catch (Exception v0) {}
 			        
-		if(document != null) { //si on arrive � ouvrir le fichier
+		if(document != null) { //si on arrive ࡯uvrir le fichier
 			         
 			         
 			//Pour les groupes
@@ -199,7 +210,7 @@ public class UserDB {
 			while(userEnumeration.hasMoreElements()) {
 				String key = (String)userEnumeration.nextElement();
 			   
-				//si c'est un �tudiant
+				//si c'est un 굵diant
 				if(this.userTable.get(key) instanceof Student) {
 					Student student = (Student)this.userTable.get(key);
 					Element Student = new Element("Student");
@@ -282,14 +293,21 @@ public class UserDB {
 			}
 			return true;
 		} 
-		return true;	 
+		return true;	 	 
 	} 
 
 	/**
-	 * Description of the method associateStudToGroup.
-	 * @param adminLogin 
-	 * @param studentLogin 
-	 * @param groupID 
+	 * Fonction permettant d'associer un Ã©tudiant Ã  un groupe. Elle renvoie true si l'association a Ã©tÃ© rÃ©alisÃ©e et false sinon. 
+	 * Cette fonction devra tester si l'Ã©tudiant et le groupe existent ou non, puis elle devra sauvegarder la base de donnÃ©e. 
+	 * @param adminLogin
+	 * 				Le login de l'administrateur qui va associer un Ã©tudiant Ã  un groupe.
+	 * 
+	 * @param studentLogin
+	 * 				Login de l'Ã©tudiant
+	 * @param groupID
+	 * 				Identifiant du groupe.
+	 * @return
+	 * 		Un boolean indiquant si l'association a bien Ã©tÃ© rÃ©alisÃ©e.
 	 */
 	public boolean associateStudToGroup(String adminLogin, String studentLogin, int groupID) {
 		if(this.userTable.get(adminLogin) instanceof Admin && this.userTable.get(studentLogin) instanceof Student) {
@@ -311,9 +329,12 @@ public class UserDB {
 		return false;
 	}
 
-	
 	/**
-	 * Description of the method groupsIdToString.
+	 * Fonction permettant de rÃ©cupÃ©rer les identifiants des groupes sous la forme d'un 
+	 * tableau de chaÃ®nes de caractÃ¨res oÃ¹ chaque ligne contient l'identifiant d'un groupe.
+	 * 
+	 * @return
+	 * 		Un tableau de String contenant l'identifiant de tous les groupes.
 	 */
 	public String[] groupsIdToString() {
 		String[] groupsIDString = new String[this.groupTable.size()];
@@ -328,7 +349,11 @@ public class UserDB {
 	}
 
 	/**
-	 * Description of the method usersLoginToString.
+	 * Fonction permettant de rÃ©cupÃ©rer les logins des utilisateurs sous la forme d'un 
+	 * tableau de chaÃ®nes de caractÃ¨res oÃ¹ chaque ligne contient le login d'un utilisateur.
+	 * 
+	 * @return
+	 * 		Un tableau de String contenant le login de tous les utilisateurs.
 	 */
 	public String[] usersLoginToString() {
 		String[] userLoginString = new String[this.userTable.size()];
@@ -345,7 +370,11 @@ public class UserDB {
 	}
 
 	/**
-	 * Description of the method studentsLoginToString.
+	 * Fonction permettant de rÃ©cupÃ©rer les logins des Ã©tudiants sous la forme d'un 
+	 * tableau de chaÃ®nes de caractÃ¨res oÃ¹ chaque ligne contient le login d'un Ã©tudiant.
+	 * 
+	 * @return
+	 * 		Un tableau de String contenant le login de tous les Ã©tudiants.
 	 */
 	public String[] studentsLoginToString() {
 		String[] userLoginString = new String[500];//Trouver le nb de students (voir dans groupe?)
@@ -364,7 +393,11 @@ public class UserDB {
 	}
 
 	/**
-	 * Description of the method usersToString.
+	 * Fonction permettant de rÃ©cupÃ©rer toutes les informations des utilisateurs sous la forme d'un 
+	 * tableau de chaÃ®nes de caractÃ¨res oÃ¹ chaque ligne contient toutes les informations d'un utilisateur.
+	 * 
+	 * @return
+	 * 		Un tableau de String contenant toutes les infos de tous les utilisateurs.
 	 */
 	public String[] usersToString() {
 		String[] userString = new String[this.userTable.size()];
@@ -389,7 +422,11 @@ public class UserDB {
 	}
 
 	/**
-	 * Description of the method groupsToString.
+	 * Fonction permettant de rÃ©cupÃ©rer toutes les informations des groupes sous la forme d'un 
+	 * tableau de chaÃ®nes de caractÃ¨res oÃ¹ chaque ligne contient les informations d'un groupe.
+	 * 
+	 * @return
+	 * 		Un tableau de String contenant toutes les informations de tous les groupes.
 	 */
 	public String[] groupsToString() {
 		String[] groupString = new String[this.groupTable.size()];
@@ -398,7 +435,7 @@ public class UserDB {
 		while(groupEnum.hasMoreElements()) {
 			String key = String.valueOf(groupEnum.nextElement());
 			Group group = (Group)this.groupTable.get(Integer.parseInt(key));
-			//on r�cupere l'�tudiant
+			//on rꤵpere l'굵diant
 			Hashtable table = group.getStudentsFromGroup();
 			Enumeration studentsEnum = table.keys();
 			while(studentsEnum.hasMoreElements()) {
@@ -413,20 +450,29 @@ public class UserDB {
 	}
 	
 	/**
-	 * Description of the method addAdmin.
-	 * @param adminLogin 
-	 * @param newAdminLogin 
-	 * @param adminID 
-	 * @param firstname 
-	 * @param surname 
-	 * @param pwd 
+	 * Fonction permettant d'ajouter un administrateur. Elle renvoie true si l'administrateur a Ã©tÃ© crÃ©Ã© et false sinon. 
+	 * Cette fonction devra tester si l'administrateur existe dÃ©jÃ  ou non, puis elle devra le sauvegarder dans la base de donnÃ©e.
+	 * @param adminLogin
+	 * 				Le login de l'administrateur qui va crÃ©er le nouvel administrateur.
+	 * @param newAdminLogin
+	 * 				Le login du nouvel administrateur.
+	 * @param adminID
+	 * 				L'identifiant du nouvel administrateur.
+	 * @param firstname
+	 * 				Le prÃ©nom du nouvel administrateur.
+	 * @param surname
+	 * 				Le nom du nouvel administrateur.
+	 * @param pwd
+	 * 				Le mot de passe du nouvel administrateur.
+	 * @return
+	 * 		Un boolean indiquant si l'administrateur a bien Ã©tÃ© crÃ©Ã©
 	 */
 	public boolean addAdmin(String adminLogin, String newAdminLogin, int adminID, String firstname, String surname,
 			String pwd) {
 		boolean isAdminAdded = false;
 		Admin newAdmin;
 		if (this.userTable.get(adminLogin) instanceof Admin && this.userTable.get(newAdminLogin) == null) {
-			newAdmin = new Admin(adminID, firstname, surname, newAdminLogin, pwd);
+			newAdmin = new Admin(adminID, newAdminLogin, pwd, firstname, surname);
 			this.userTable.put(newAdminLogin, newAdmin);
 			isAdminAdded = true;
 			saveDB();
@@ -435,12 +481,22 @@ public class UserDB {
 	}
 
 	/**
-	 * Description of the method addTeacher.
-	 * @param adminLogin 
-	 * @param newTeacherLogin 
-	 * @param teacherID 
-	 * @param firstname 
-	 * @param surname 
+	 * Fonction permettant d'ajouter un professeur. Elle renvoie true si le professeur a Ã©tÃ© crÃ©Ã© et false sinon. 
+	 * Cette fonction devra tester si le professeur existe dÃ©jÃ  ou non, puis elle devra le sauvegarder dans la base de donnÃ©e.
+	 * @param adminLogin
+	 * 				Le login de l'administrateur qui va crÃ©er le nouveau professeur.
+	 * @param newTeacherLogin
+	 * 				Le login du nouveau professeur.
+	 * @param teacherID
+	 * 				L'identifiant du nouveau professeur.
+	 * @param firstname
+	 * 				Le prÃ©nom du nouveau professeur.
+	 * @param surname
+	 * 				Le nom du nouveau professeur.
+	 * @param pwd
+	 * 				Le mot de passe du nouveau professeur.
+	 * @return
+	 * 		Un boolean indiquant si le nouveau professeur a bien Ã©tÃ© crÃ©Ã©
 	 */
 	public boolean addTeacher(String adminLogin, String newTeacherLogin, int teacherID, String firstname,
 			String surname, String pwd) {
@@ -448,7 +504,7 @@ public class UserDB {
 		//System.out.println("je rentre dans addTeacher");
 		Admin newTeacher;
 		if (this.userTable.get(adminLogin) instanceof Admin && this.userTable.get(newTeacherLogin) == null) {
-			newTeacher = new Admin(teacherID, firstname, surname, newTeacherLogin, pwd);
+			newTeacher = new Admin(teacherID, newTeacherLogin, pwd, firstname, surname);
 			this.userTable.put(newTeacherLogin, newTeacher);
 			isTeacherAdded = true;
 			saveDB();
@@ -457,20 +513,29 @@ public class UserDB {
 	}
 
 	/**
-	 * Description of the method addStudent.
-	 * @param adminLogin 
-	 * @param newStudentLogin 
-	 * @param studentID 
-	 * @param firstname 
-	 * @param surname 
-	 * @param pwd 
+	 * Fonction permettant d'ajouter un Ã©tudiant. Elle renvoie true si l'Ã©tudiant a Ã©tÃ© crÃ©Ã© et false sinon. 
+	 * Cette fonction devra tester si l'Ã©tudiant existe dÃ©jÃ  ou non, puis elle devra le sauvegarder dans la base de donnÃ©e.
+	 * @param adminLogin
+	 * 				Le login de l'administrateur qui va crÃ©er le nouvel Ã©tudiant.
+	 * @param newStudentLogin
+	 * 				Le login du nouvel Ã©tudiant.
+	 * @param studentID
+	 * 				L'identifiant du nouvel Ã©tudiant.
+	 * @param firstname
+	 * 				Le prÃ©nom du nouvel Ã©tudiant.
+	 * @param surname
+	 * 				Le nom du nouvel Ã©tudiant.
+	 * @param pwd
+	 * 				Le mot de passe du nouvel Ã©tudiant.
+	 * @return
+	 * 		Un boolean indiquant si le nouvel Ã©tudiant a bien Ã©tÃ© crÃ©Ã©
 	 */
 	public boolean addStudent(String adminLogin, String newStudentLogin, int studentID, String firstname,
 			String surname, String pwd) {
 		boolean isStudentAdded = false;
 		Student newStudent;
 		if (this.userTable.get(adminLogin) instanceof Admin && this.userTable.get(newStudentLogin) == null) {
-			newStudent = new Student(studentID, firstname, surname, newStudentLogin, pwd);
+			newStudent = new Student(studentID, newStudentLogin, pwd, firstname, surname);
 			this.userTable.put(newStudentLogin, newStudent);
 			isStudentAdded = true;
 			saveDB();
@@ -479,9 +544,15 @@ public class UserDB {
 	}
 
 	/**
-	 * Description of the method removeUser.
-	 * @param adminLogin 
-	 * @param userLogin 
+	 * Fonction permettant de supprimer un utilisateur. Elle renvoie true si l'utilisateur a Ã©tÃ© supprimÃ© et false sinon. 
+	 * Cette fonction devra tester si l'utilisateur existe ou non, puis elle devra le retirer de la base de donnÃ©e. 
+	 * !!!!!! Si c'est un Ã©tudiant, il faudra penser Ã  le retirer du groupe auquel il appartient. !!!
+	 * @param adminLogin
+	 * 				Le login de l'administrateur qui va supprimer l'utilisateur.
+	 * @param userLogin
+	 * 				Le login d'utilisateur Ã  supprimer.
+	 * @return
+	 * 		Un boolean indiquant si l'utilisateur a bien Ã©tÃ© supprimÃ©.
 	 */
 	public boolean removeUser(String adminLogin, String userLogin) {
 		boolean isUserRemoved = false;
@@ -499,9 +570,14 @@ public class UserDB {
 	}
 
 	/**
-	 * Description of the method addGroup.
-	 * @param adminLogin 
-	 * @param groupID 
+	 * Fonction permettant d'ajouter un groupe. Elle renvoie true si le groupe a Ã©tÃ© ajoutÃ© et false sinon. 
+	 * Cette fonction devra tester si le groupe existe dÃ©jÃ  ou non, puis elle devra le crÃ©er et le sauvegarder dans la base de donnÃ©e. 
+	 * @param adminLogin
+	 * 				Le login de l'administrateur qui va crÃ©er le groupe.
+	 * @param groupID
+	 * 				L'identifiant du groupe Ã  crÃ©er.
+	 * @return
+	 * 		Un boolean indiquant si le groupe a Ã©tÃ© crÃ©Ã©.
 	 */
 	public boolean addGroup(String adminLogin, int groupID) {
 		  boolean isGroupAdded = false;
@@ -514,9 +590,14 @@ public class UserDB {
 	}
 
 	/**
-	 * Description of the method removeGroup.
-	 * @param adminLogin 
-	 * @param groupID 
+	 * Fonction permettant de supprimer un groupe. Elle renvoie true si le groupe a Ã©tÃ© supprimÃ© et false sinon. 
+	 * 
+	 * @param adminLogin
+	 * 				Le login de l'administrateur qui va supprimer le groupe.
+	 * @param groupID
+	 * 				Identifiant du groupe Ã  supprimer.
+	 * @return
+	 * 		Un boolean indiquant si le groupe a bien Ã©tÃ© supprimÃ©.
 	 */
 	public boolean removeGroup(String adminLogin, int groupID) {
 		boolean isGroupRemoved = false;
@@ -530,8 +611,12 @@ public class UserDB {
 	}
 
 	/**
-	 * Description of the method getStudentGroup.
-	 * @param studentLogin 
+	 * Fonction permettant de rÃ©cupÃ©rer l'identifiant de groupe de l'Ã©tudiant Ã  partir de son login. Elle renvoie l'identifiant du groupe de l'Ã©tudiant s'il existe et -1 sinon.
+	 * 
+	 * @param studentLogin
+	 * 		Le login de l'Ã©tudiant
+	 * @return
+	 * 		L'identifiant de groupe de l'Ã©tudiant 
 	 */
 	public int getStudentGroup(String studentLogin) {
 		if (this.userTable.get(studentLogin) instanceof Student) {
@@ -543,8 +628,12 @@ public class UserDB {
 	}
 		
 	/**
-	 * Description of the method getUserName.
-	 * @param userLogin 
+	 * Fonction permettant de rÃ©cupÃ©rer le nom et le prÃ©nom de l'utilisateur Ã  partir de son login
+	 * 
+	 * @param userLogin
+	 * 		Le login de l'utilisateur
+	 * @return
+	 * 		Une chaine de caractÃ¨re contenant le prÃ©nom et le nom de l'utilisateur
 	 */
 	public String getUserName(String userLogin) {
 		if (this.userTable.get(userLogin) != null && this.userTable.get(userLogin) instanceof Student) {
@@ -564,9 +653,19 @@ public class UserDB {
 	}
 
 	/**
-	 * Description of the method getUserClass.
-	 * @param userLogin 
-	 * @param userPwd 
+	 * Fonction permettant de rÃ©cupÃ©rer la classe de l'utilisateur Ã  partir de son login et de son mot de passe. 
+	 * Elle renvoie :
+	 * 			- "" si l'utilisateur n'est pas reconnu (vÃ©rification du login et mdp).
+	 * 			- "Student" si l'utilisateur est un Ã©tudiant 
+	 *			- "Teacher" si l'utilisateur est un professeur
+	 *			- "Administrator" si l'utilisateur est un administrateur 
+	 *
+	 * @param userLogin
+	 * 		Le login de l'utilisateur
+	 * @param userPwd
+	 * 		Le mot de passe de l'utilisateur
+	 * @return
+	 * 		Une chaine de caractÃ¨re contenant la classe de l'utilisateur
 	 */
 	public String getUserClass(String userLogin, String userPwd) {
 		String userClass = "";

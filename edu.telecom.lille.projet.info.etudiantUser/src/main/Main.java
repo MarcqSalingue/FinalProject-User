@@ -11,8 +11,6 @@ import view.MainFrame;
  * @version 04/2016
  */
 
-//TODO Classe à ne pas modifier
-
 public class Main {
 	
 	/**

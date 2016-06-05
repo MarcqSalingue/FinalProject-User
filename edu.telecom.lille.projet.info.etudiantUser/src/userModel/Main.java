@@ -5,12 +5,10 @@ import userController.UserController;
  * Cette classe permet de tester les fonctions du contrôleur d'utilisateurs.
  * Elle crée une base de données de 6 utilisateurs et les sauvegarde dans le fichier "usersDB.xml". 
  * 
- * @author Jose Mennesson (Mettre à jour)
- * @version 04/2016 (Mettre à jour)
+ * @author Hugo Marcq
+ * @version 06/2016
  * 
  */
-
-//TODO Classe pouvant être modifiée suivant vos besoins
 
 public class Main {
 	/**

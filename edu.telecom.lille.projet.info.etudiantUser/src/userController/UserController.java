@@ -2,12 +2,12 @@ package userController;
 
 import userModel.UserDB;
 /**
- * Cette classe est le contrÃ´leur d'utilisateurs que vous devez implÃ©menter. 
- * Elle contient un attribut correspondant Ã  la base de donnÃ©es utilisateurs que vous allez crÃ©er.
- * Elle contient toutes les fonctions de l'interface IUserController que vous devez implÃ©menter.
+ * Cette classe represente le contrÃ´leur d'utilisateurs
+ * Elle contient un attribut correspondant Ã  la base de donnÃ©es utilisateurs.
+ * Elle contient toutes les fonctions de l'interface IUserController.
  * 
- * @author Jose Mennesson (Mettre Ã  jour)
- * @version 04/2016 (Mettre Ã  jour)
+ * @author Hugo Marcq
+ * @version 06/2016
  * 
  */
 
@@ -120,10 +120,21 @@ public class UserController implements IUserController
 		return userDB.saveDB();
 	}
 
+	/**
+	 * Méthode permettant de récupérer l'objet base de données utilisateur.
+	 * 
+	 * @return L'instance de base de données utilisateurs.
+	 */
 	public UserDB getUserDB() {
 		return userDB;
 	}
 
+	/**
+	 * Méthode permettant d'affecter un objet base de données utilisateurs à l'attribut userDB de cette classe.
+	 * 
+	 * @param userDB
+	 * 		Objet de type UserDB correspondant à l'instance de base de données utilisateurs qui sera affectée au contrôleur.
+	 */
 	public void setUserDB(UserDB userDB) {
 		this.userDB = userDB;
 	}

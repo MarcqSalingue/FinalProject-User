@@ -2,6 +2,10 @@
 <TimeTablesDB>
   <Rooms>
     <Room>
+      <RoomId>3</RoomId>
+      <Capacity>150</Capacity>
+    </Room>
+    <Room>
       <RoomId>2</RoomId>
       <Capacity>100</Capacity>
     </Room>
@@ -12,11 +16,7 @@
   </Rooms>
   <TimeTables>
     <TimeTable>
-      <GroupId>2</GroupId>
-      <Books />
-    </TimeTable>
-    <TimeTable>
-      <GroupId>89</GroupId>
+      <GroupId>47</GroupId>
       <Books />
     </TimeTable>
   </TimeTables>
